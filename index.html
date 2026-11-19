@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#123c35">
+  <title>EBDT Clinical Platform</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f7f6;
+      color: #20312d;
+    }
+    header {
+      background: #123c35;
+      color: white;
+      padding: 22px 18px;
+    }
+    header h1 { margin: 0; font-size: 25px; }
+    header p { margin-bottom: 0; color: #d1e5df; }
+    nav {
+      background: white;
+      padding: 14px;
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      border-bottom: 1px solid #ddd;
+    }
+    nav a {
+      color: #174e43;
+      text-decoration: none;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+    main { padding: 20px; max-width: 1000px; margin: auto; }
+    .welcome {
+      background: white;
+      border-radius: 14px;
+      padding: 22px;
+      margin-bottom: 22px;
+    }
+    .welcome h2 { color: #123c35; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+      gap: 15px;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid #e1e9e6;
+    }
+    .card h3 { color: #17614f; }
+    .card p { color: #64736e; line-height: 1.5; }
+    .notice {
+      background: #fff5dc;
+      border-left: 4px solid #d49a24;
+      padding: 15px;
+      margin-top: 22px;
+      border-radius: 6px;
+    }
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: #65746f;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>EBDT Clinical Platform</h1>
+  <p>Emergency & Basic Disease Treatment</p>
+</header>
+
+<nav>
+  <a href="#home">Home</a>
+  <a href="#modules">Clinical Modules</a>
+  <a href="#about">About</a>
+</nav>
+
+<main id="home">
+
+  <section class="welcome">
+    <h2>Welcome to EBDT</h2>
+    <p>
+      A clinical decision support platform designed
+      to support healthcare professionals with
+      evidence-based clinical information.
+    </p>
+  </section>
+
+  <h2 id="modules">Clinical Modules</h2>
+
+  <section class="grid">
+
+    <div class="card">
+      <h3>Adult Emergency</h3>
+      <p>Emergency assessment and clinical management resources.</p>
+    </div>
+
+    <div class="card">
+      <h3>Pediatric Care</h3>
+      <p>Child health assessment and pediatric emergency resources.</p>
+    </div>
+
+    <div class="card">
+      <h3>Drug Information</h3>
+      <p>Medication information, indications and safety guidance.</p>
+    </div>
+
+    <div class="card">
+      <h3>IV Fluid Calculator</h3>
+      <p>Tools for fluid calculations and clinical reference.</p>
+    </div>
+
+    <div class="card">
+      <h3>Clinical Guidelines</h3>
+      <p>Evidence-based guidelines and treatment references.</p>
+    </div>
+
+    <div class="card">
+      <h3>Clinical Decision Support</h3>
+      <p>Structured clinical assessment and decision support.</p>
+    </div>
+
+  </section>
+
+  <div class="notice">
+    <strong>Clinical Safety Notice:</strong>
+    This platform is under development.
+    All clinical decisions must be verified
+    using current approved guidelines and
+    professional clinical judgment.
+  </div>
+
+  <section id="about">
+    <h2>About EBDT</h2>
+    <p>
+      EBDT aims to provide accessible clinical
+      resources for nurses, doctors, pharmacists,
+      midwives and other healthcare professionals.
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  EBDT Clinical Platform | Version 1.0
+  <p>Educational and clinical decision support resource.</p>
+</footer>
+
+</body>
+</html>
