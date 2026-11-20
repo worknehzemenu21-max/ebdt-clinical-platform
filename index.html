@@ -9,24 +9,23 @@
 *{box-sizing:border-box}
 body{font-family:Arial,sans-serif;background:#f1f5f9;color:#172554;margin:0}
 header{background:#075985;color:white;padding:24px 16px;text-align:center}
-header h1{margin:0 0 8px;font-size:25px}
-header p{margin:0}
+header h1{font-size:25px;margin:0 0 8px}
 main{max-width:760px;margin:22px auto;padding:0 14px}
 .card{background:white;padding:20px;margin-bottom:18px;border-radius:12px;box-shadow:0 2px 8px #0001}
 h2{color:#075985;font-size:20px;margin-top:0}
 h3{font-size:17px}
 label{display:block;margin:12px 0 6px;font-weight:bold}
 input,textarea,select{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:7px;font-size:16px}
-textarea{min-height:75px}
+textarea{min-height:65px}
 button{background:#0369a1;color:white;border:0;border-radius:8px;padding:13px 18px;font-size:16px;width:100%;margin-top:14px}
-button:active{opacity:.8}
 .check{display:flex;align-items:flex-start;gap:10px;margin:13px 0;font-weight:normal}
 .check input{width:19px;height:19px;margin:0}
 .danger{border-left:5px solid #dc2626}
 .warning{background:#fef2f2;color:#991b1b;padding:12px;border-radius:8px}
-#assessment{display:none}
-footer{text-align:center;padding:20px;color:#64748b;font-size:13px}
 .small{font-size:13px;color:#64748b}
+#assessment,#investigations,#summary{display:none}
+.test{border:1px solid #cbd5e1;border-radius:8px;padding:13px;margin:12px 0}
+footer{text-align:center;padding:20px;color:#64748b;font-size:13px}
 </style>
 </head>
 <body>
@@ -34,113 +33,90 @@ footer{text-align:center;padding:20px;color:#64748b;font-size:13px}
 <h1>EBDT Clinical Platform</h1>
 <p>Clinical Assessment & Decision Support</p>
 </header>
-
 <main>
 <section class="card" id="patientForm">
 <h2>1. Patient Assessment</h2>
-
 <label>Chief Complaint (1–3 complaints)</label>
-<textarea id="complaint" placeholder="Example: Fever, cough, headache" required></textarea>
-
+<textarea id="complaint" placeholder="Example: Fever, cough" required></textarea>
 <h3>Patient Information</h3>
 <label>Age (years)</label>
-<input id="age" type="number" min="0" placeholder="Enter age">
-
+<input id="age" type="number" min="0" placeholder="Age">
 <label>Sex</label>
 <select id="sex">
 <option value="">Select sex</option>
-<option>Male</option>
-<option>Female</option>
-<option>Other / Unknown</option>
+<option>Male</option><option>Female</option><option>Other / Unknown</option>
 </select>
-
 <label>Weight (kg) – Optional</label>
-<input id="weight" type="number" min="0" step="0.1" placeholder="Weight">
-
+<input id="weight" type="number" min="0" step="0.1">
 <h3>Additional Clinical Information</h3>
 <label>Duration of illness</label>
 <input id="duration" placeholder="Example: 3 days">
-
 <label>Medical history</label>
-<textarea id="history" placeholder="Previous diseases or relevant history"></textarea>
-
+<textarea id="history"></textarea>
 <label>Current medications</label>
-<textarea id="medications" placeholder="Current medications"></textarea>
-
+<textarea id="medications"></textarea>
 <label>Allergies</label>
-<textarea id="allergies" placeholder="Known drug or other allergies"></textarea>
-
+<textarea id="allergies"></textarea>
 <label>Other findings</label>
-<textarea id="other" placeholder="Additional clinical findings"></textarea>
-
+<textarea id="other"></textarea>
 <button onclick="startAssessment()">Continue to Clinical Assessment</button>
 </section>
 
 <section id="assessment">
 <div class="card danger">
 <h2>2. Emergency Red-Flag Screening</h2>
-<div class="warning">
-Check for emergency warning signs first. If any are present, arrange immediate clinical assessment and emergency care according to local protocols. Do not delay care to complete this tool.
-</div>
+<div class="warning">Check emergency warning signs first. If present, arrange urgent clinical assessment. Do not delay emergency care to complete this tool.</div>
 <div id="dangerOptions"></div>
 </div>
-
 <div class="card">
 <h2>3. Associated Symptoms</h2>
-<p class="small">Select all symptoms present. These are prompts for clinical assessment, not a diagnosis.</p>
+<p class="small">Select all symptoms present. These are assessment prompts, not a diagnosis.</p>
 <div id="symptomOptions"></div>
-<button onclick="finishAssessment()">Continue</button>
-</div>
-
-<div class="card" id="summary" style="display:none">
-<h2>Assessment Summary</h2>
-<div id="summaryText"></div>
-<p class="small">This prototype does not diagnose, prescribe, or transmit patient information.</p>
+<button onclick="showInvestigations()">Continue to Investigations</button>
 </div>
 </section>
-</main>
 
+<section id="investigations">
+<div class="card">
+<h2>4. Suggested Diagnostic Investigations</h2>
+<p class="small">Preliminary suggestions based on complaint keywords only. A qualified clinician must decide which tests are appropriate.</p>
+<div id="testOptions"></div>
+<button onclick="finishAssessment()">Continue to Summary</button>
+</div>
+</section>
+
+<section class="card" id="summary">
+<h2>5. Clinical Assessment Summary</h2>
+<div id="summaryText"></div>
+<p class="small">This prototype does not diagnose, prescribe, or transmit patient information. Verify all decisions with current approved guidelines.</p>
+<button onclick="location.reload()">Start New Assessment</button>
+</section>
+</main>
 <footer>
 EBDT Clinical Platform | Prototype Version<br>
-For health professionals. Verify clinical decisions using current approved guidelines.
+For health professionals. Clinical decisions require professional judgment and approved guidelines.
 </footer>
 
 <script>
-const dangerSigns = [
+const dangerSigns=[
 "Difficulty breathing or severe respiratory distress",
 "Unconsciousness or markedly reduced consciousness",
-"Active severe bleeding",
-"Seizure or convulsions",
-"Severe chest pain",
-"Signs of severe allergic reaction",
+"Active severe bleeding","Seizure or convulsions",
+"Severe chest pain","Signs of severe allergic reaction",
 "Severe dehydration or shock"
 ];
 
-const symptomGroups = [
-{words:["fever","febrile","temperature"],items:[
-"Chills or shivering","Sweating","Headache","Body aches","Loss of appetite","Skin rash","Neck stiffness"
-]},
-{words:["cough","respiratory","breath"],items:[
-"Shortness of breath","Chest pain","Sputum production","Wheezing","Sore throat","Runny nose","Fast breathing"
-]},
-{words:["abdominal","stomach","belly","pain"],items:[
-"Nausea","Vomiting","Abdominal distension","Diarrhea","Constipation","Loss of appetite","Pain on urination"
-]},
-{words:["diarrhea","loose stool"],items:[
-"Vomiting","Blood in stool","Fever","Thirst","Reduced urine output","Sunken eyes","Abdominal cramps"
-]},
-{words:["vomit","nausea"],items:[
-"Abdominal pain","Diarrhea","Fever","Blood in vomit","Unable to drink","Reduced urine output"
-]},
-{words:["headache","head pain"],items:[
-"Vomiting","Neck stiffness","Photophobia","Blurred vision","Dizziness","Fever","Weakness"
-]},
-{words:["injury","trauma","fall","wound"],items:[
-"Pain","Swelling","Bleeding","Deformity","Loss of movement","Loss of consciousness","Open wound"
-]}
+const symptomGroups=[
+{words:["fever","febrile","temperature"],items:["Chills","Sweating","Headache","Body aches","Loss of appetite","Skin rash","Neck stiffness"]},
+{words:["cough","respiratory","breath"],items:["Shortness of breath","Chest pain","Sputum","Wheezing","Sore throat","Runny nose","Fast breathing"]},
+{words:["abdominal","stomach","belly","pain"],items:["Nausea","Vomiting","Abdominal distension","Diarrhea","Constipation","Pain on urination"]},
+{words:["diarrhea","loose stool"],items:["Vomiting","Blood in stool","Fever","Thirst","Reduced urine","Sunken eyes","Abdominal cramps"]},
+{words:["vomit","nausea"],items:["Abdominal pain","Diarrhea","Fever","Blood in vomit","Unable to drink","Reduced urine"]},
+{words:["headache","head pain"],items:["Vomiting","Neck stiffness","Photophobia","Blurred vision","Dizziness","Fever","Weakness"]},
+{words:["injury","trauma","fall","wound"],items:["Pain","Swelling","Bleeding","Deformity","Loss of movement","Loss of consciousness","Open wound"]}
 ];
 
-function makeChecks(container, items, prefix){
+function makeChecks(container,items,prefix){
 container.innerHTML="";
 items.forEach((item,i)=>{
 const label=document.createElement("label");
@@ -158,76 +134,104 @@ container.appendChild(label);
 
 function startAssessment(){
 const complaint=document.getElementById("complaint").value.trim();
-if(!complaint){
-alert("Please enter at least one chief complaint.");
-return;
-}
-
+if(!complaint){alert("Please enter a chief complaint.");return;}
 const lower=complaint.toLowerCase();
 let suggestions=[];
-
 symptomGroups.forEach(group=>{
-if(group.words.some(word=>lower.includes(word))){
-suggestions=suggestions.concat(group.items);
-}
+if(group.words.some(word=>lower.includes(word))) suggestions=suggestions.concat(group.items);
 });
-
-if(suggestions.length===0){
-suggestions=[
-"Pain","Fever","Weakness","Loss of appetite",
-"Nausea","Vomiting","Dizziness","Other relevant symptoms"
-];
-}
-
-suggestions=[...new Set(suggestions)];
-suggestions.push("None of the above","Unable to assess");
-
+if(!suggestions.length)suggestions=["Pain","Fever","Weakness","Loss of appetite","Nausea","Vomiting","Dizziness"];
+suggestions=[...new Set(suggestions),"None of the above","Unable to assess"];
 makeChecks(document.getElementById("symptomOptions"),suggestions,"sym");
 makeChecks(document.getElementById("dangerOptions"),dangerSigns,"danger");
-
 document.getElementById("patientForm").style.display="none";
 document.getElementById("assessment").style.display="block";
+window.scrollTo(0,0);
+}
+
+function showInvestigations(){
+const selected=[...document.querySelectorAll("#symptomOptions input:checked")].map(x=>x.value);
+if(!selected.length){alert("Select symptoms or None / Unable to assess.");return;}
+const complaint=document.getElementById("complaint").value.toLowerCase();
+let tests=[];
+if(/fever|febrile|malaria/.test(complaint)){
+tests.push("Malaria RDT or microscopy (when clinically indicated)","Complete Blood Count (CBC), if indicated");
+}
+if(/cough|breath|respiratory|chest/.test(complaint)){
+tests.push("Pulse oximetry (SpO2)","Respiratory rate assessment","Chest X-ray, if clinically indicated");
+}
+if(/diarrhea|loose stool|vomit|vomiting/.test(complaint)){
+tests.push("Clinical dehydration assessment","Random Blood Glucose (RBS), if indicated","Stool examination, when indicated");
+}
+if(/abdominal|stomach|belly|urine/.test(complaint)){
+tests.push("Urinalysis, if indicated","Pregnancy test, when relevant","Abdominal ultrasound, if indicated");
+}
+if(/headache|weakness|dizz/.test(complaint)){
+tests.push("Blood pressure measurement","Random Blood Glucose (RBS), if indicated");
+}
+if(!tests.length)tests=["Vital signs assessment","Random Blood Glucose (RBS), if clinically indicated"];
+tests=[...new Set(tests)];
+const container=document.getElementById("testOptions");
+container.innerHTML="";
+tests.forEach((test,i)=>{
+const div=document.createElement("div");
+div.className="test";
+const title=document.createElement("strong");
+title.textContent=test;
+const status=document.createElement("select");
+status.id="status"+i;
+status.innerHTML='<option value="Not done / unavailable">Not done / unavailable</option><option value="Normal">Normal</option><option value="Abnormal">Abnormal</option>';
+const label=document.createElement("label");
+label.textContent="Test status";
+label.appendChild(status);
+const result=document.createElement("textarea");
+result.id="result"+i;
+result.placeholder="Enter result or details (optional)";
+div.append(title,label);
+const resultLabel=document.createElement("label");
+resultLabel.textContent="Test result";
+resultLabel.appendChild(result);
+div.appendChild(resultLabel);
+container.appendChild(div);
+});
+document.getElementById("assessment").style.display="none";
+document.getElementById("investigations").style.display="block";
 window.scrollTo(0,0);
 }
 
 function finishAssessment(){
 const selected=[...document.querySelectorAll("#symptomOptions input:checked")].map(x=>x.value);
 const danger=[...document.querySelectorAll("#dangerOptions input:checked")].map(x=>x.value);
-
-if(selected.length===0){
-alert("Please select symptoms, None of the above, or Unable to assess.");
-return;
-}
-
 const complaint=document.getElementById("complaint").value;
-const age=document.getElementById("age").value;
-const sex=document.getElementById("sex").value;
-
-document.getElementById("summaryText").innerHTML="";
-
+const tests=document.querySelectorAll("#testOptions .test");
 const lines=[
 "Chief complaint: "+complaint,
-"Age: "+(age||"Not provided"),
-"Sex: "+(sex||"Not provided"),
+"Age: "+(document.getElementById("age").value||"Not provided"),
+"Sex: "+(document.getElementById("sex").value||"Not provided"),
+"Duration: "+(document.getElementById("duration").value||"Not provided"),
 "Selected symptoms: "+selected.join(", "),
-"Emergency warning signs selected: "+(danger.length?danger.join(", "):"None selected")
+"Emergency warning signs: "+(danger.length?danger.join(", "):"None selected"),
+"Investigations:"
 ];
-
+tests.forEach((test,i)=>{
+lines.push(test.querySelector("strong").textContent+": "+document.getElementById("status"+i).value+"; Result: "+(document.getElementById("result"+i).value||"Not entered"));
+});
+const summary=document.getElementById("summaryText");
+summary.innerHTML="";
 lines.forEach(line=>{
 const p=document.createElement("p");
 p.textContent=line;
-document.getElementById("summaryText").appendChild(p);
+summary.appendChild(p);
 });
-
 if(danger.length){
 const warning=document.createElement("p");
 warning.className="warning";
-warning.textContent="One or more emergency warning signs were selected. Arrange urgent clinical assessment. Do not rely on this prototype to determine severity.";
-document.getElementById("summaryText").appendChild(warning);
+warning.textContent="Emergency warning sign selected. Arrange urgent clinical assessment.";
+summary.appendChild(warning);
 }
-
+document.getElementById("investigations").style.display="none";
 document.getElementById("summary").style.display="block";
-document.getElementById("summary").scrollIntoView({behavior:"smooth"});
+window.scrollTo(0,0);
 }
 </script>
 </body>
