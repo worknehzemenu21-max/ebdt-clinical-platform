@@ -228,7 +228,19 @@ const warning=document.createElement("p");
 warning.className="warning";
 warning.textContent="Emergency warning sign selected. Arrange urgent clinical assessment.";
 summary.appendChild(warning);
-}
+}// Connect patient assessment to diagnosis module
+const diagnosisModule = document.getElementById("diagnosis-module");
+const diagnosisResults = document.getElementById("diagnosis-results");
+
+diagnosisResults.innerHTML = "";
+
+const statusMessage = document.createElement("p");
+statusMessage.textContent =
+  "Patient assessment received successfully. Clinical diagnosis rules are not yet configured. Do not use this prototype to make treatment decisions.";
+
+diagnosisResults.appendChild(statusMessage);
+
+diagnosisModule.style.display = "block";
 document.getElementById("investigations").style.display="none";
 document.getElementById("summary").style.display="block";
 window.scrollTo(0,0);
