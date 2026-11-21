@@ -1,0 +1,284 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EBDT Clinical Platform V2</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f2f6fa;color:#203047}
+header{background:#075b76;color:white;padding:22px 15px;text-align:center}
+header h1{margin:0;font-size:24px}
+header p{margin:8px 0 0;font-size:14px}
+.container{max-width:750px;margin:20px auto;padding:15px}
+.card{background:white;padding:20px;border-radius:12px;margin-bottom:16px;box-shadow:0 2px 9px #00000012}
+h2{color:#075b76;margin-top:0}
+label{display:block;font-weight:bold;margin:13px 0 6px}
+input,select,textarea{width:100%;padding:12px;border:1px solid #ccd6df;border-radius:7px;font-size:16px;background:white}
+textarea{min-height:75px}
+button{padding:12px 18px;border:0;border-radius:7px;background:#087b9c;color:white;font-size:16px;font-weight:bold;margin:8px 4px 0 0}
+button.secondary{background:#64748b}
+button:disabled{opacity:.5}
+.step{display:none}
+.step.active{display:block}
+.progress{height:9px;background:#dce5eb;border-radius:10px;margin:15px 0}
+.bar{height:9px;background:#0795a9;border-radius:10px;width:25%}
+.checks label{font-weight:normal;display:flex;align-items:center;gap:9px;margin:10px 0}
+.checks input{width:auto}
+.warning{background:#fff3cd;border-left:5px solid #e2a400;padding:13px;border-radius:5px;font-size:14px;line-height:1.5}
+.result{background:#edf6fa;padding:12px;border-radius:7px;margin:10px 0;overflow-wrap:anywhere}
+footer{text-align:center;color:#64748b;font-size:12px;padding:20px}
+</style>
+</head>
+<body>
+
+<header>
+<h1>EBDT Clinical Platform</h1>
+<p>Clinical Assessment Support for Ethiopian Health Professionals</p>
+</header>
+
+<div class="container">
+<div class="card">
+<strong id="stepTitle">Step 1 of 4: Patient Information</strong>
+<div class="progress"><div class="bar" id="progressBar"></div></div>
+</div>
+
+<form id="assessmentForm">
+
+<section class="card step active" id="step1">
+<h2>1. Patient Information</h2>
+
+<label>Age (years)</label>
+<input type="number" id="age" min="0" max="120" placeholder="Enter age">
+
+<label>Sex</label>
+<select id="sex">
+<option value="">Select sex</option>
+<option>Male</option>
+<option>Female</option>
+<option>Other / Not specified</option>
+</select>
+
+<label>Weight (kg) - Optional</label>
+<input type="number" id="weight" min="0" step="0.1">
+
+<label>Duration of illness</label>
+<input type="text" id="duration" placeholder="e.g. 3 days">
+
+<label>Chief complaint</label>
+<textarea id="complaint" placeholder="Enter the main patient complaint"></textarea>
+
+<label>Relevant history and medication</label>
+<textarea id="history" placeholder="Past history, current medications, allergies..."></textarea>
+
+<button type="button" onclick="nextStep(2)">Next: Symptoms</button>
+</section>
+
+<section class="card step" id="step2">
+<h2>2. Symptoms and Danger Signs</h2>
+<p>Select symptoms reported or observed.</p>
+
+<div class="checks" id="symptoms">
+<label><input type="checkbox" value="Fever"> Fever</label>
+<label><input type="checkbox" value="Cough"> Cough</label>
+<label><input type="checkbox" value="Difficulty breathing"> Difficulty breathing</label>
+<label><input type="checkbox" value="Chest pain"> Chest pain</label>
+<label><input type="checkbox" value="Vomiting"> Vomiting</label>
+<label><input type="checkbox" value="Diarrhea"> Diarrhea</label>
+<label><input type="checkbox" value="Abdominal pain"> Abdominal pain</label>
+<label><input type="checkbox" value="Headache"> Headache</label>
+<label><input type="checkbox" value="Loss of appetite"> Loss of appetite</label>
+<label><input type="checkbox" value="Convulsion"> Convulsion</label>
+<label><input type="checkbox" value="Altered consciousness"> Altered consciousness</label>
+<label><input type="checkbox" value="Weakness"> Weakness</label>
+</div>
+
+<label>Other symptoms or examination findings</label>
+<textarea id="otherSymptoms"></textarea>
+
+<h3>Danger signs</h3>
+<div class="checks" id="dangerSigns">
+<label><input type="checkbox" value="Unconsciousness"> Unconsciousness</label>
+<label><input type="checkbox" value="Severe respiratory distress"> Severe respiratory distress</label>
+<label><input type="checkbox" value="Active severe bleeding"> Active severe bleeding</label>
+<label><input type="checkbox" value="Convulsion"> Ongoing convulsion</label>
+<label><input type="checkbox" value="Shock signs"> Signs of shock</label>
+<label><input type="checkbox" value="Unable to drink"> Unable to drink or breastfeed</label>
+</div>
+
+<button type="button" class="secondary" onclick="nextStep(1)">Back</button>
+<button type="button" onclick="nextStep(3)">Next: Investigations</button>
+</section>
+
+<section class="card step" id="step3">
+<h2>3. Investigations</h2>
+<p>Enter investigations already performed. Select the result status.</p>
+
+<label>Investigation name</label>
+<input id="testName" placeholder="e.g. CBC, RBS, Malaria test">
+
+<label>Result or status</label>
+<select id="testResult">
+<option value="">Select result</option>
+<option>Positive</option>
+<option>Negative</option>
+<option>Normal</option>
+<option>Abnormal</option>
+<option>Pending</option>
+<option>Not done</option>
+</select>
+
+<label>Additional details</label>
+<textarea id="testDetails" placeholder="Enter result values or other details"></textarea>
+
+<button type="button" onclick="addTest()">Add Investigation</button>
+<div id="testList"></div>
+
+<button type="button" class="secondary" onclick="nextStep(2)">Back</button>
+<button type="button" onclick="showAssessment()">Complete Assessment</button>
+</section>
+
+<section class="card step" id="step4">
+<h2>4. Assessment Summary</h2>
+<div id="summary"></div>
+
+<div class="warning">
+<strong>Clinical safety warning:</strong><br>
+This platform is an early prototype. It does not provide validated diagnoses, treatment recommendations, or prescriptions. It must not be used as the basis for clinical decisions. Assess the patient directly, follow current Ethiopian Standard Treatment Guidelines, and consult an experienced clinician.
+</div>
+
+<h2>Possible Diagnoses</h2>
+<div class="result">
+Clinical diagnosis rules are not yet configured. No diagnosis has been generated.
+</div>
+
+<h2>Management and Treatment</h2>
+<div class="result">
+Validated treatment protocols are not yet connected. Use approved clinical guidelines and professional judgment.
+</div>
+
+<h2>Referral and Follow-up</h2>
+<div class="result">
+Assess urgency and refer patients according to clinical findings and local protocols.
+</div>
+
+<button type="button" class="secondary" onclick="nextStep(3)">Back</button>
+<button type="button" onclick="newAssessment()">Start New Assessment</button>
+</section>
+
+</form>
+
+<footer>
+EBDT Clinical Platform | Prototype Version 2<br>
+For educational and development purposes only.
+</footer>
+</div>
+
+<script>
+let investigations=[];
+
+function nextStep(number){
+document.querySelectorAll(".step").forEach(s=>s.classList.remove("active"));
+document.getElementById("step"+number).classList.add("active");
+document.getElementById("stepTitle").textContent=
+"Step "+number+" of 4: "+[
+"","Patient Information","Symptoms and Danger Signs",
+"Investigations","Assessment Summary"
+][number];
+document.getElementById("progressBar").style.width=(number*25)+"%";
+window.scrollTo(0,0);
+}
+
+function addTest(){
+const name=document.getElementById("testName").value.trim();
+const result=document.getElementById("testResult").value;
+const details=document.getElementById("testDetails").value.trim();
+
+if(!name||!result){
+alert("Please enter the investigation name and result status.");
+return;
+}
+
+investigations.push({name,result,details});
+renderTests();
+
+document.getElementById("testName").value="";
+document.getElementById("testResult").value="";
+document.getElementById("testDetails").value="";
+}
+
+function renderTests(){
+const list=document.getElementById("testList");
+list.innerHTML="";
+investigations.forEach((test,index)=>{
+const item=document.createElement("div");
+item.className="result";
+item.textContent=test.name+" — "+test.result+
+(test.details?" — "+test.details:"");
+list.appendChild(item);
+});
+}
+
+function checkedValues(id){
+return Array.from(document.querySelectorAll("#"+id+" input:checked"))
+.map(input=>input.value);
+}
+
+function showAssessment(){
+const complaint=document.getElementById("complaint").value.trim();
+
+if(!complaint){
+alert("Please enter the chief complaint first.");
+nextStep(1);
+return;
+}
+
+const symptoms=checkedValues("symptoms");
+const danger=checkedValues("dangerSigns");
+
+let html="<h3>Patient Information</h3>";
+html+="<p><b>Age:</b> "+(document.getElementById("age").value||"Not entered")+"</p>";
+html+="<p><b>Sex:</b> "+(document.getElementById("sex").value||"Not entered")+"</p>";
+html+="<p><b>Weight:</b> "+(document.getElementById("weight").value||"Not entered")+" kg</p>";
+html+="<p><b>Duration:</b> "+(document.getElementById("duration").value||"Not entered")+"</p>";
+html+="<p><b>Chief complaint:</b> "+escapeHTML(complaint)+"</p>";
+html+="<p><b>History:</b> "+escapeHTML(document.getElementById("history").value||"Not entered")+"</p>";
+html+="<h3>Symptoms</h3><p>"+(symptoms.join(", ")||"None selected")+"</p>";
+html+="<p><b>Other findings:</b> "+escapeHTML(document.getElementById("otherSymptoms").value||"None entered")+"</p>";
+html+="<h3>Investigations</h3>";
+
+investigations.forEach(t=>{
+html+="<p>"+escapeHTML(t.name)+" — "+escapeHTML(t.result)+" "+escapeHTML(t.details)+"</p>";
+});
+
+if(investigations.length===0) html+="<p>No investigations entered.</p>";
+
+html+="<h3>Danger Signs</h3>";
+html+="<p>"+(danger.join(", ")||"None selected")+"</p>";
+
+if(danger.length>0){
+html+='<div class="warning"><strong>Urgent attention:</strong> Danger sign(s) selected. Immediately assess the patient and arrange emergency care or referral according to clinical protocols.</div>';
+}
+
+document.getElementById("summary").innerHTML=html;
+nextStep(4);
+}
+
+function escapeHTML(value){
+return String(value).replace(/[&<>"']/g,function(c){
+return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+});
+}
+
+function newAssessment(){
+if(!confirm("Start a new assessment? Current entered information will be cleared.")) return;
+document.getElementById("assessmentForm").reset();
+investigations=[];
+document.getElementById("testList").innerHTML="";
+document.getElementById("summary").innerHTML="";
+nextStep(1);
+}
+</script>
+</body>
+</html>
