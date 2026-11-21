@@ -234,5 +234,52 @@ document.getElementById("summary").style.display="block";
 window.scrollTo(0,0);
 }
 </script>
+
+<section id="diagnosis-module" class="module">
+  <h2>Possible Diagnoses</h2>
+  <p>Review the clinical information and investigation results before considering these possibilities.</p>
+
+  <div id="diagnosis-results">
+    <p>Complete the patient assessment and investigations first.</p>
+  </div>
+
+  <p class="clinical-warning">
+    Clinical decision support only. These possibilities are not confirmed
+    diagnoses. Use current Ethiopian STG, clinical judgment and referral
+    protocols.
+  </p>
+</section>
+
+<script>
+function showPossibleDiagnoses(diagnoses) {
+  const container = document.getElementById("diagnosis-results");
+  container.innerHTML = "";
+
+  diagnoses.slice(0, 3).forEach((item, index) => {
+    const card = document.createElement("div");
+    card.className = "diagnosis-card";
+
+    const heading = document.createElement("h3");
+    heading.textContent =
+      (index + 1) + ". " + item.name;
+
+    const evidence = document.createElement("p");
+    evidence.textContent =
+      "Supporting evidence: " + item.evidence;
+
+    const against = document.createElement("p");
+    against.textContent =
+      "Findings against: " + item.against;
+
+    const tests = document.createElement("p");
+    tests.textContent =
+      "Further investigations: " + item.tests;
+
+    card.append(heading, evidence, against, tests);
+    container.appendChild(card);
+  });
+}
+</script>
+
 </body>
 </html>
