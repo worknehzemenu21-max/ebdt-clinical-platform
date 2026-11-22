@@ -1,0 +1,289 @@
+{
+  "platform": "EBDT Clinical Platform",
+  "source": {
+    "title": "Standard Treatment Guidelines for General Hospitals, Fourth Edition",
+    "publisher": "Ethiopian Ministry of Health",
+    "year": 2021,
+    "file": "STG-Final-4th-edtion-2021.pdf",
+    "chapter": "4. Cardiovascular Disorders",
+    "printed_pages": "86-135 (chapter continues through approximately page 139)",
+    "source_status": "User-provided national guideline; source text summarized, not reproduced verbatim."
+  },
+  "dataset_status": "DRAFT_REFERENCE_ONLY_NOT_CLINICALLY_VALIDATED",
+  "intended_use": "Reference structure for later clinician-reviewed clinical decision-support development.",
+  "safety": {
+    "not_for_patient_care": true,
+    "not_a_diagnostic_or_prescribing_engine": true,
+    "must_not_generate_automated_treatment_or_doses": true,
+    "requires_review_by_licensed_Ethiopian_clinicians_and_pharmacists": true,
+    "must_verify_against_current_guidelines_before_deployment": true,
+    "emergency_rule": "If any danger sign or hemodynamic instability is present, prioritize immediate emergency assessment/referral; do not wait for the software output."
+  },
+  "workflow_fields": [
+    "age_years",
+    "sex",
+    "pregnancy_status_when_relevant",
+    "chief_complaint",
+    "symptom_onset_and_duration",
+    "associated_symptoms",
+    "past_cardiac_history",
+    "medication_and_stimulant_history",
+    "blood_pressure",
+    "pulse_rate",
+    "respiratory_rate",
+    "temperature",
+    "oxygen_saturation",
+    "ECG_result",
+    "echocardiography_result_when_available",
+    "relevant_laboratory_results"
+  ],
+  "global_danger_signs": [
+    "syncope or altered mental status",
+    "severe respiratory distress or oxygen saturation below 90%",
+    "hypotension or signs of shock",
+    "ongoing or severe chest pain suggestive of acute coronary syndrome",
+    "hemodynamically unstable tachyarrhythmia or symptomatic severe bradycardia",
+    "acute pulmonary edema",
+    "new focal neurological deficit"
+  ],
+  "conditions": [
+    {
+      "id": "CV_ARRHYTHMIA",
+      "name": "Cardiac arrhythmias",
+      "subconditions": [
+        "Atrial fibrillation/flutter",
+        "Paroxysmal supraventricular tachycardia",
+        "Bradyarrhythmia/AV block",
+        "Ventricular tachycardia",
+        "Ventricular fibrillation"
+      ],
+      "suggestive_features": [
+        "palpitations",
+        "shortness of breath",
+        "dizziness",
+        "syncope",
+        "chest discomfort",
+        "heart failure symptoms"
+      ],
+      "key_assessment": [
+        "12-lead ECG is the main diagnostic test",
+        "Assess hemodynamic stability",
+        "Consider electrolytes, thyroid function, CBC, echocardiography and chest X-ray guided by clinical findings"
+      ],
+      "safety_rules": [
+        "Do not initiate antiarrhythmic medication without ECG confirmation",
+        "Unstable tachyarrhythmia requires emergency management",
+        "Treat wide-complex tachycardia as potentially ventricular until assessed by an appropriately trained clinician"
+      ],
+      "source_pages": [
+        86,
+        87,
+        88,
+        90
+      ]
+    },
+    {
+      "id": "CV_HEART_FAILURE",
+      "name": "Heart failure",
+      "suggestive_features": [
+        "dyspnea",
+        "orthopnea",
+        "paroxysmal nocturnal dyspnea",
+        "fatigue",
+        "ankle or leg edema",
+        "raised JVP",
+        "pulmonary crackles",
+        "hepatomegaly",
+        "ascites"
+      ],
+      "possible_causes_to_assess": [
+        "hypertension",
+        "ischemic heart disease",
+        "valvular disease",
+        "cardiomyopathy",
+        "thyrotoxicosis",
+        "congenital heart disease"
+      ],
+      "key_assessment": [
+        "Assess congestion and perfusion",
+        "ECG",
+        "chest X-ray",
+        "echocardiography",
+        "renal function and electrolytes",
+        "investigate precipitating causes as indicated"
+      ],
+      "urgent_escalation": [
+        "cardiogenic shock",
+        "severe dyspnea or SpO2 below 90%",
+        "significant arrhythmia",
+        "suspected acute coronary syndrome",
+        "hypertensive emergency",
+        "altered mental status"
+      ],
+      "source_pages": [
+        97,
+        98,
+        99,
+        100,
+        101,
+        102,
+        103
+      ]
+    },
+    {
+      "id": "CV_HYPERTENSION",
+      "name": "Adult hypertension",
+      "suggestive_features": [
+        "often asymptomatic",
+        "may present with headache",
+        "visual symptoms",
+        "chest pain",
+        "dyspnea",
+        "neurological symptoms"
+      ],
+      "key_assessment": [
+        "Measure blood pressure correctly and repeat as appropriate",
+        "Assess cardiovascular risk and target-organ damage",
+        "Check renal function and other tests as clinically indicated"
+      ],
+      "reference_thresholds_from_STG": [
+        "Adult hypertension threshold stated as BP at or above 140/90 mmHg",
+        "Severe BP alone does not define hypertensive emergency; acute target-organ damage is required"
+      ],
+      "safety_rules": [
+        "Pregnancy or possible pregnancy changes medicine selection",
+        "Avoid ACE inhibitors, ARBs and thiazides in pregnancy; seek appropriate clinician review",
+        "Suspected hypertensive emergency requires urgent hospital-level assessment"
+      ],
+      "source_pages": [
+        108,
+        109,
+        110,
+        111,
+        112,
+        113,
+        114,
+        115,
+        116,
+        117,
+        118
+      ]
+    },
+    {
+      "id": "CV_CORONARY_DISEASE",
+      "name": "Atherosclerotic cardiovascular disease / coronary syndromes",
+      "subconditions": [
+        "Chronic coronary syndrome",
+        "Acute coronary syndrome"
+      ],
+      "suggestive_features": [
+        "chest discomfort or pressure",
+        "symptoms related to exertion",
+        "relief with rest may occur",
+        "acute or persistent chest pain may indicate ACS"
+      ],
+      "key_assessment": [
+        "ECG",
+        "clinical assessment for ACS",
+        "risk-factor assessment",
+        "further cardiac testing or referral when indicated"
+      ],
+      "urgent_escalation": [
+        "Suspected acute coronary syndrome is a medical emergency and requires urgent hospital assessment"
+      ],
+      "source_pages": [
+        119,
+        120,
+        121,
+        122,
+        123,
+        124,
+        125,
+        126,
+        127
+      ]
+    },
+    {
+      "id": "CV_RHEUMATIC_HEART_DISEASE",
+      "name": "Rheumatic heart disease",
+      "suggestive_features": [
+        "history suggestive of rheumatic fever",
+        "heart murmur",
+        "dyspnea",
+        "palpitations",
+        "features of heart failure"
+      ],
+      "key_assessment": [
+        "Clinical cardiac examination",
+        "ECG",
+        "echocardiography",
+        "assess complications and need for specialist care"
+      ],
+      "safety_rules": [
+        "Suspected significant valve disease or heart failure requires clinician assessment and referral"
+      ],
+      "source_pages": [
+        128,
+        129,
+        130
+      ]
+    },
+    {
+      "id": "CV_VALVULAR_DISEASE",
+      "name": "Valvular heart disease",
+      "suggestive_features": [
+        "dyspnea on exertion",
+        "orthopnea",
+        "paroxysmal nocturnal dyspnea",
+        "palpitations",
+        "angina",
+        "murmur",
+        "syncope"
+      ],
+      "key_assessment": [
+        "Echocardiography to define valve lesion and cardiac function",
+        "ECG",
+        "chest X-ray when indicated"
+      ],
+      "urgent_escalation": [
+        "acute valve dysfunction with shock, cyanosis or pulmonary edema is an emergency"
+      ],
+      "safety_rules": [
+        "STG recommends specialist/cardiologist consultation or referral for important valve lesions"
+      ],
+      "source_pages": [
+        131,
+        132,
+        133
+      ]
+    },
+    {
+      "id": "CV_INFECTIVE_ENDOCARDITIS",
+      "name": "Infective endocarditis",
+      "suggestive_features": [
+        "unexplained fever with a new heart murmur",
+        "fever with bacteremia",
+        "known damaged or prosthetic valve with systemic illness"
+      ],
+      "key_assessment": [
+        "Urgent clinician assessment",
+        "blood cultures before antibiotics when feasible and without delaying emergency care",
+        "echocardiography and other investigations as available"
+      ],
+      "safety_rules": [
+        "Maintain high suspicion when new murmur accompanies unexplained fever or bacteremia",
+        "Requires hospital-level evaluation and specialist input"
+      ],
+      "source_pages": [
+        134,
+        135,
+        136,
+        137,
+        138,
+        139
+      ]
+    }
+  ],
+  "pediatric_scope_note": "This dataset is Chapter 4 cardiovascular disorders and should not be treated as complete pediatric coverage. Pediatric cardiovascular content is addressed separately in STG Chapter 16.7 and requires a separate extraction and review.",
+  "next_development_step": "Clinician review of this structured reference, then build explicit age-specific and condition-specific decision rules with test cases. Drug doses should be added only after independent verification and sign-off."
+}
