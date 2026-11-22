@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EBDT Diagnosis Engine – STG Reference Prototype</title>
+<style>
+:root{font-family:Arial,sans-serif;color:#18302b;background:#f4f8f6}
+*{box-sizing:border-box}body{margin:0;padding:16px}.wrap{max-width:760px;margin:auto}
+header,.panel{background:white;border:1px solid #dce8e2;border-radius:14px;padding:16px;margin-bottom:14px}
+h1{font-size:1.45rem;margin:0 0 8px;color:#126348}h2{font-size:1.1rem;margin:0 0 12px}
+p{line-height:1.5}.notice{background:#fff6df;border:1px solid #f0d99a;padding:12px;border-radius:10px;font-size:.92rem}
+label{display:block;font-weight:600;margin:12px 0 6px}
+input,select,textarea{width:100%;padding:11px;border:1px solid #bdcec5;border-radius:9px;font-size:1rem;background:white}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.checks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.check{display:flex;gap:8px;align-items:flex-start;background:#f6faf8;padding:9px;border-radius:8px;font-weight:400;margin:0}
+.check input{width:auto;margin-top:3px}
+button{border:0;border-radius:10px;padding:13px 16px;font-weight:700;font-size:1rem;background:#126348;color:white;width:100%;margin-top:14px}
+.secondary{background:#e7f0eb;color:#18302b}
+.result{padding:12px;border-radius:10px;background:#edf6f1;margin:9px 0}
+.danger{background:#fff0ed;border:1px solid #e7a49a}
+.small{font-size:.86rem;color:#4d625a}
+@media(max-width:480px){.grid,.checks{grid-template-columns:1fr}}
+</style>
+</head>
+<body><main class="wrap">
+<header>
+<h1>EBDT – Clinical Assessment Prototype</h1>
+<p>Initial decision-support foundation for adults and children.</p>
+<div class="notice"><strong>Safety:</strong> This prototype is not clinically validated and does not diagnose, prescribe, or replace a qualified clinician. Do not enter patient names or identifying information. Use local emergency protocols for urgent cases.</div>
+</header>
+<section class="panel">
+<h2>1. Patient details</h2>
+<div class="grid">
+<div><label for="age">Age (years)</label><input id="age" type="number" min="0" max="120" placeholder="e.g. 35"></div>
+<div><label for="sex">Sex</label><select id="sex"><option value="">Select</option><option>Female</option><option>Male</option><option>Other / not recorded</option></select></div>
+</div>
+<label for="complaint">Chief complaint</label><input id="complaint" placeholder="e.g. shortness of breath">
+<label for="duration">Duration</label><input id="duration" placeholder="e.g. 2 days">
+</section>
+<section class="panel">
+<h2>2. Symptoms</h2>
+<div class="checks">
+<label class="check"><input type="checkbox" value="Palpitations" name="symptom">Palpitations</label>
+<label class="check"><input type="checkbox" value="Shortness of breath" name="symptom">Shortness of breath</label>
+<label class="check"><input type="checkbox" value="Chest pain" name="symptom">Chest pain</label>
+<label class="check"><input type="checkbox" value="Leg swelling" name="symptom">Leg swelling</label>
+<label class="check"><input type="checkbox" value="Dizziness" name="symptom">Dizziness</label>
+<label class="check"><input type="checkbox" value="Fainting / syncope" name="symptom">Fainting / syncope</label>
+<label class="check"><input type="checkbox" value="Orthopnea" name="symptom">Orthopnea (breathlessness lying flat)</label>
+<label class="check"><input type="checkbox" value="Fatigue" name="symptom">Fatigue</label>
+<label class="check"><input type="checkbox" value="Headache" name="symptom">Headache</label>
+<label class="check"><input type="checkbox" value="Blurred vision" name="symptom">Blurred vision</label>
+</div>
+</section>
+<section class="panel">
+<h2>3. Vital signs</h2>
+<div class="grid">
+<div><label for="temp">Temperature (°C)</label><input id="temp" type="number" step="0.1" placeholder="37.0"></div>
+<div><label for="pulse">Pulse (beats/min)</label><input id="pulse" type="number" placeholder="80"></div>
+<div><label for="rr">Respiratory rate (/min)</label><input id="rr" type="number" placeholder="18"></div>
+<div><label for="spo2">SpO₂ (%)</label><input id="spo2" type="number" placeholder="98"></div>
+<div><label for="sbp">Systolic BP (mmHg)</label><input id="sbp" type="number" placeholder="120"></div>
+<div><label for="dbp">Diastolic BP (mmHg)</label><input id="dbp" type="number" placeholder="80"></div>
+</div>
+</section>
+<section class="panel">
+<h2>4. Danger signs</h2>
+<p class="small">Select any danger sign observed. This is a safety prompt, not a complete triage checklist.</p>
+<div class="checks">
+<label class="check"><input type="checkbox" value="Severe breathing difficulty" name="danger">Severe breathing difficulty</label>
+<label class="check"><input type="checkbox" value="Chest pain" name="danger">Chest pain</label>
+<label class="check"><input type="checkbox" value="Fainting / unconsciousness" name="danger">Fainting / unconsciousness</label>
+<label class="check"><input type="checkbox" value="Confusion" name="danger">New confusion</label>
+<label class="check"><input type="checkbox" value="Blue lips / severe cyanosis" name="danger">Blue lips / severe cyanosis</label>
+<label class="check"><input type="checkbox" value="Seizure" name="danger">Seizure</label>
+</div>
+</section>
+<section class="panel">
+<h2>5. Investigation results</h2>
+<label for="ecg">ECG result</label><select id="ecg"><option value="">Not done / not entered</option><option>Normal / no significant abnormality reported</option><option>Abnormal – details entered below</option></select>
+<label for="tests">Other investigations and results</label><textarea id="tests" rows="3" placeholder="Enter test name and result, or leave blank"></textarea>
+<button onclick="assess()">Review assessment</button>
+<button class="secondary" onclick="resetForm()">Clear and start again</button>
+</section>
+<section class="panel">
+<h2>6. Ethiopian STG Chapter 4 reference search</h2>
+<p class="small">Search the connected draft reference library by condition, symptom, investigation, or safety phrase. Results are reference topics only—not diagnoses or treatment recommendations.</p>
+<label for="stgSearch">Search STG reference</label>
+<input id="stgSearch" type="search" placeholder="e.g. palpitations, ECG, hypertension">
+<button onclick="searchSTG()">Search reference</button>
+<div id="stgStatus" class="small">Loading STG reference file…</div>
+<div id="stgResults"></div>
+</section>
+<section class="panel" id="output" aria-live="polite">
+<h2>Assessment output</h2>
+<p class="small">Complete the form and select “Review assessment”. The tool displays safety prompts and broad areas for clinician review; it does not generate a confirmed diagnosis.</p>
+</section>
+</main>
+<script>
+function selected(name){return [...document.querySelectorAll('input[name="'+name+'"]:checked')].map(x=>x.value)}
+function val(id){return document.getElementById(id).value.trim()}
+function assess(){
+ const symptoms=selected('symptom'), dangers=selected('danger');
+ const spo2=Number(val('spo2')), sbp=Number(val('sbp'));
+ const output=document.getElementById('output');
+ let html='<h2>Assessment output</h2>';
+ if(dangers.length || (val('spo2') && spo2<90) || (val('sbp') && sbp<90)){
+  html+='<div class="result danger"><strong>Urgent safety alert</strong><p>One or more selected danger signs or concerning entered values are present. Arrange immediate in-person clinical assessment and follow local emergency/referral protocols. Do not rely on this prototype to determine stability.</p>';
+  if(dangers.length) html+='<p>Selected danger signs: '+dangers.join(', ')+'</p>';
+  if(val('spo2') && spo2<90) html+='<p>Entered SpO₂ is below 90%.</p>';
+  if(val('sbp') && sbp<90) html+='<p>Entered systolic BP is below 90 mmHg.</p>';
+  html+='</div>';
+ } else {
+  html+='<div class="result"><strong>No danger sign selected in this limited checklist.</strong><p>This does not rule out an emergency. Complete a full clinical assessment.</p></div>';
+ }
+ let areas=[];
+ if(symptoms.includes('Palpitations')||symptoms.includes('Dizziness')||symptoms.includes('Fainting / syncope')) areas.push('Cardiac rhythm / arrhythmia assessment: review pulse, 12-lead ECG, history, medicines and relevant electrolytes as clinically indicated.');
+ if(symptoms.includes('Shortness of breath')||symptoms.includes('Orthopnea')||symptoms.includes('Leg swelling')) areas.push('Heart failure and respiratory causes: assess work of breathing, JVP, lung and cardiac findings; consider ECG, chest X-ray, echocardiography and relevant laboratory tests according to clinical judgement.');
+ if(symptoms.includes('Headache')||symptoms.includes('Blurred vision')||(val('sbp')&&sbp>=140)||(val('dbp')&&Number(val('dbp'))>=90)) areas.push('Blood pressure / hypertension assessment: repeat BP using correct technique and assess symptoms and evidence of acute target-organ injury. A single reading alone does not establish chronic hypertension.');
+ if(symptoms.includes('Chest pain')) areas.push('Chest pain requires prompt assessment for potentially serious cardiac and non-cardiac causes; follow local acute chest-pain pathway.');
+ if(areas.length){html+='<h3>Areas to consider for clinician review</h3>';areas.forEach(a=>html+='<div class="result">'+a+'</div>');}
+ else html+='<p>No symptom pathway matched in this small initial prototype. This does not mean the patient has no disease.</p>';
+ html+='<h3>Recorded information</h3><p><strong>Chief complaint:</strong> '+(val('complaint')||'Not entered')+'</p><p><strong>Symptoms:</strong> '+(symptoms.join(', ')||'None selected')+'</p><p><strong>ECG:</strong> '+(val('ecg')||'Not entered')+'</p><p><strong>Other investigations:</strong> '+(val('tests')||'Not entered')+'</p>';
+ html+='<p class="small"><strong>Important:</strong> These are broad prompts only, not ranked diagnoses or treatment instructions. Clinical validation against the current Ethiopian STG and review by qualified clinicians are required before any real-world use.</p>';
+ output.innerHTML=html;
+ output.scrollIntoView({behavior:'smooth'});
+}
+function resetForm(){
+ document.querySelectorAll('input').forEach(x=>{if(x.type==='checkbox')x.checked=false;else x.value=''});
+ document.querySelectorAll('select').forEach(x=>x.selectedIndex=0);
+ document.querySelectorAll('textarea').forEach(x=>x.value='');
+ document.getElementById('output').innerHTML='<h2>Assessment output</h2><p class="small">Complete the form and select “Review assessment”.</p>';
+ document.getElementById('stgResults').innerHTML='';
+ window.scrollTo(0,0);
+}
+let stgData=null;
+fetch('./EBDT_STG_Chapter4_Draft_Reference.json')
+ .then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json()})
+ .then(data=>{
+   stgData=data;
+   document.getElementById('stgStatus').textContent='STG reference loaded: '+data.conditions.length+' draft cardiovascular topics. Source: Ethiopian Ministry of Health STG, Fourth Edition (2021).';
+ })
+ .catch(()=>{
+   document.getElementById('stgStatus').textContent='Could not load the JSON file. Check that EBDT_STG_Chapter4_Draft_Reference.json is in the same GitHub folder as this HTML file.';
+ });
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function searchSTG(){
+ const q=val('stgSearch').toLowerCase();
+ const box=document.getElementById('stgResults');
+ if(!stgData){box.innerHTML='<div class="result danger">STG reference is not loaded. Check the JSON file location.</div>';return;}
+ if(!q){box.innerHTML='<p class="small">Enter a search word first.</p>';return;}
+ const hits=stgData.conditions.filter(c=>JSON.stringify(c).toLowerCase().includes(q));
+ if(!hits.length){box.innerHTML='<p class="small">No matching topic in this Chapter 4 draft reference. This does not exclude a condition.</p>';return;}
+ box.innerHTML=hits.map(c=>{
+  const arr=(label,items)=>items&&items.length?'<p><strong>'+label+':</strong></p><ul>'+items.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>':'';
+  return '<div class="result"><h3>'+esc(c.name)+'</h3>'+arr('Suggestive features',c.suggestive_features)+arr('Key assessment',c.key_assessment)+arr('Safety rules',c.safety_rules)+arr('Urgent escalation',c.urgent_escalation)+'<p class="small">STG source pages: '+(c.source_pages||[]).join(', ')+'</p></div>';
+ }).join('');
+}
+</script>
+</body></html>
