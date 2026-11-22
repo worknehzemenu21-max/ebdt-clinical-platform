@@ -72,6 +72,8 @@ footer{text-align:center;color:#64748b;font-size:12px;padding:20px}
 <label>Relevant history and medication</label>
 <textarea id="history" placeholder="Past history, current medications, allergies..."></textarea>
 
+  <textarea id="physical-examination" placeholder="Enter examination findings"></textarea>
+
 <button type="button" onclick="nextStep(2)">Next: Symptoms</button>
 </section>
 
@@ -187,6 +189,7 @@ document.getElementById("stepTitle").textContent=
 "Investigations","Assessment Summary"
 ][number];
 document.getElementById("progressBar").style.width=(number*25)+"%";
+document.getElementById("vital-signs").style.display = number === 1 ? "block" : "none";
 window.scrollTo(0,0);
 }
 
@@ -280,7 +283,6 @@ document.getElementById("summary").innerHTML="";
 nextStep(1);
 }
 </script>
-
 <section id="vital-signs" class="module">
   <h2>Vital Signs</h2>
   <p>Enter the patient's vital signs.</p>
@@ -301,7 +303,6 @@ nextStep(1);
   <input type="number" id="spo2" placeholder="e.g. 98">
 
   <label>Physical Examination Findings</label>
-  <textarea id="physical-examination" placeholder="Enter examination findings"></textarea>
 </section>
 </body>
 </html>
