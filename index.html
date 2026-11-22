@@ -211,6 +211,12 @@ const lines=[
 "Duration: "+(document.getElementById("duration").value||"Not provided"),
 "Selected symptoms: "+selected.join(", "),
 "Emergency warning signs: "+(danger.length?danger.join(", "):"None selected"),
+"Temperature: "+(document.getElementById("temperature").value || "Not entered"),
+"Pulse: "+(document.getElementById("pulse").value || "Not entered"),
+"Respiratory Rate: "+(document.getElementById("respiratory-rate").value || "Not entered"),
+"Blood Pressure: "+(document.getElementById("blood-pressure").value || "Not entered"),
+"SpO2: "+(document.getElementById("spo2").value || "Not entered"),
+"Physical Examination: "+(document.getElementById("physical-examination").value || "Not entered"),
 "Investigations:"
 ];
 tests.forEach((test,i)=>{
